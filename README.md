@@ -1,4 +1,4 @@
-![scheme of project](./schema.png)
+![scheme of project back](./schema.png)
 
 ```
 mkdir users
@@ -49,4 +49,18 @@ DB_NAME = REPLACE_YOUR_DB_NAME
 ```
 ```
 npm install @faker-js/faker --save-dev
+```
+
+#REACT
+![scheme of project front](./schema-front.png)
+
+```
+shop-react-express$ npm create vite@latest client -- --template react
+shop-react-express/client$ npm install
+```
+*shop-react-express/.gitignore*
+```
+./client/node_modules
+node_modules
+.env
 ```
