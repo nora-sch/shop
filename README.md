@@ -86,3 +86,35 @@ https://react-icons.github.io/react-icons/
 ```
 shop-react-express/client$ npm i react-router-dom
 ```
+# CORS 
+I add the prefix "api" to the route users in app.js of express
+```
+app.use("/api/users", userRouter);
+```
+to say, that "/" is my application express and to make things more clear - all the routes which starts with "/api/..." will send and recieve json to and from react vite.
+
+In react I add "proxy section in *shop-react-express/client/vite.config.js*
+with this prefix and the address of express server to say that any request what starts with "api" should be forwarded to localhost:5000. But the browser will think that is still a part of react app.
+```
+export default defineConfig({
+  server: {
+    proxy: {
+      "/api" : "http://localhost:5000",
+    },
+  },
+  plugins: [react()],
+});
+```
+So in my fetch *shop-react-express/client/features/signUp/SignUp.jsx* I use the address which starts with /api which will find the address in proxy of *vite.config.js*
+```
+const postUser = async () => {
+      const sendUser = await fetch('/api/users/signup',{
+        method: "POST",
+        body: JSON.stringify(toSend),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      ...
+}
+```

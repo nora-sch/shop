@@ -16,13 +16,14 @@ const dateToday = new Date().toISOString().slice(0, 10);
 router.get("/", (req, res) => {
   dbConnection.query(getAll, (err, result, fields) => {
     if (!err) {
-      res.status(200).json(result);
+      res.status(200).json({users:result});
     } else {
       res.status(500).send("Error saving the user");
     }
   });
 });
-router.post("/", (req, res) => {
+router.post("/signup", (req, res) => {
+  console.log(req.body);
   const { firstName, lastName, email } = req.body;
   // {
   //     "firstName":"Nora",
@@ -33,10 +34,13 @@ router.post("/", (req, res) => {
     createOne,
     [firstName, lastName, email, dateToday, dateToday, false],
     (err, result, fields) => {
+   
       if (!err) {
-        res.location(`/${result.insertId}`).sendStatus(201);
+        // res.location(`/${result.insertId}`).sendStatus(201);
+        res.json({ status: 201 });
       } else {
-        res.status(500).send("Error saving the user");
+        console.log(err);
+        res.status(500).send(err);
       }
     }
   );

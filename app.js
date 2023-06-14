@@ -9,7 +9,7 @@ const userRouter = require("./routes/user");
 app.get("/", (req, res) => {
   res.send("SHOP");
 });
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 app.use("/seed", seedRouter);
 
 app.listen(port, (err) => {
