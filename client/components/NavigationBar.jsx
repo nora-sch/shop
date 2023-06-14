@@ -28,18 +28,18 @@ function NavigationBar(args) {
 
   return (
     <div>
-      <Navbar expand={"xl"}>
-        <NavbarBrand href="/">Shop</NavbarBrand>
+      <Navbar expand={"xl"} >
+        <NavbarBrand href="/" style={{color:'#713f4b'}}>Shop</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <NavLink tag={RRNavLink} to="/">
+              <NavLink tag={RRNavLink} to="/" style={{color:'#713f4b'}}>
                 Home
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={RRNavLink} to="/profile">
+              <NavLink tag={RRNavLink} to="/profile" style={{color:'#713f4b'}}>
                 Profile
               </NavLink>
             </NavItem>
@@ -59,12 +59,12 @@ function NavigationBar(args) {
               Sign In
             </NavLink>
           )} */}
-           <NavLink tag={RRNavLink} to="/sign-in">
-              Sign In
-            </NavLink>
-            <NavLink tag={RRNavLink} to="/sign-up">
+           <NavLink tag={RRNavLink} to="/sign-up">
               Sign Up
             </NavLink>
+           <NavLink tag={RRNavLink} to="/sign-in">
+              Sign In
+            </NavLink>    
         </Collapse>
       </Navbar>
     </div>

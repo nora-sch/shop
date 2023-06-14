@@ -6,7 +6,7 @@ import SignUp from "../features/signUp/SignUp";
 import SignIn from "../features/signIn/SignIn"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {

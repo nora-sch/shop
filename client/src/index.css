@@ -1,7 +1,8 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   padding: 0;
   margin: 0;
+  background-color: #FAF0E4;
 }
 
 body {
@@ -10,9 +11,10 @@ body {
   align-items: flex-start;
   min-width: 320px;
   min-height: 100vh; 
-}
+  background-color: #FAF0E4;
+} */
 
-h1 {
+/* h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
@@ -47,4 +49,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 
 function SignUp() {
   //   const MAX_LENGTH = 255;
@@ -26,6 +27,7 @@ function SignUp() {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 3000,
           theme: "colored",
+          className: "toast-success",
         });
         break;
       case "error":
@@ -33,6 +35,7 @@ function SignUp() {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 3000,
           theme: "colored",
+          className: "toast-error",
         });
         break;
     }
@@ -53,7 +56,7 @@ function SignUp() {
         },
       });
       if (sendUser.status === 200) {
-        notify("You are signed up. Log in, please!", "success");
+        notify(`Welcome, ${firstName}! Log in, please!`, "success");
         setIsSignedUp(true);
       } else {
         notify("User insert ERROR", "error");
@@ -63,59 +66,79 @@ function SignUp() {
   };
 
   return (
-    <div>
-        <form className="sign-up-form" onSubmit={handleSubmit}>
-        <label htmlFor="firstName">First name</label>
-        <input
-          //   className={maximumReached(firstName, MAX_LENGTH) ? "length-maximum-reached" : "length-ok"}
-          className="text-input"
-          name="firstName"
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        {/* <small className="remaining-characters">
-          {numRemaining} remaining characters
-        </small> */}
-        <label htmlFor="lastName">Last name</label>
-        <input
-          className="text-input"
-          name="lastName"
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          className="text-input"
-          name="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          className="text-input"
-          name="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <label htmlFor="password2">Repeat password</label>
-        <input
-          className="text-input"
-          name="password2"
-          type="password"
-          value={password2}
-          onChange={(e) => setPassword2(e.target.value)}
-          required
-        />
-        <button type="submit">Sign Up</button>
-      </form>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+       height:'100vh',
+     
+      }}
+    >
+      <Form style={{ width: "25%",    backgroundColor:"#F0DBDB", padding:'1rem', borderRadius:'10px'}} onSubmit={handleSubmit}>
+        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
+          <Label style={{ margin:'0px'}} for="firstName">First name</Label>
+          <Input
+           
+            name="firstName"
+            type="text"
+            value={firstName}
+            // placeholder="First name"
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
+          <Label style={{ margin:'0px'}} for="lastName">Last name</Label>
+          <Input
+            className="text-input"
+            name="lastName"
+            type="text"
+            value={lastName}
+            // placeholder="Last name"
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </FormGroup>
+
+        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
+          <Label style={{ margin:'0px'}} for="email">Email</Label>
+          <Input
+            className="text-input"
+            name="email"
+            type="email"
+            value={email}
+            // placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
+          <Label style={{ margin:'0px'}} for="password">Password</Label>
+          <Input
+            className="text-input"
+            name="password"
+            type="password"
+            value={password}
+            // placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
+          <Label style={{ margin:'0px'}} for="password2"></Label>
+          <Input
+            className="text-input"
+            name="password2"
+            type="password"
+            value={password2}
+            placeholder="Repeat your password"
+            onChange={(e) => setPassword2(e.target.value)}
+            required
+          />
+        </FormGroup>
+        <Button type="submit" style={{width:'100%', backgroundColor:'#DBA39A', border:'none'}}>Sign up</Button>
+      </Form>
     </div>
   );
 }

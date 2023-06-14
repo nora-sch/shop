@@ -1,10 +1,38 @@
+/* 
+FEFCF3
+F5EBE0
+F0DBDB
+DBA39A
+ */
+/* :root{
+  --toastify-color-success: #AACB73;
+  --toastify-color-error: #DBA39A;
+ } */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* max-width: 1280px; */
+  margin: 0, auto;
+  padding: 0 3rem;
+  background-color: #fefcf3;
+  color:#713f4b;
+}
+body {
+  margin: 0;
+  padding: 0;
+  align-items: flex-start;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #fefcf3;
+
 }
 
+/* div .toast-success .Toastify__toast .Toastify__toast-theme--colored  {
+  background-color: #aacb73;
+}
+div .toast-error .Toastify__toast .Toastify__toast-theme--colored  {
+  background-color: #dba39a;
+} */
+
+/* 
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -43,4 +71,4 @@
 
 .length-maximum-reached{
   background-color: rgb(201, 133, 133);
-}
+} */
