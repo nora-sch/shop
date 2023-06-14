@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignUp() {
   //   const MAX_LENGTH = 255;
@@ -9,71 +11,60 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [isSignedUp, setIsSignedUp] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isSignedUp) {
+      navigate("/sign-in");
+    }
+  }, [isSignedUp]);
+
+  const notify = (msg, type) => {
+    switch (type) {
+      case "success":
+        toast.success(msg, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000,
+          theme: "colored",
+        });
+        break;
+      case "error":
+        toast.error(msg, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 3000,
+          theme: "colored",
+        });
+        break;
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const toSend = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-    };
- 
-    alert(`A form was submitted: ${firstName} ${lastName} ${email}`);
     const postUser = async () => {
-      const sendUser = await fetch('/api/users/signup',{
+      const sendUser = await fetch("/api/users/signup", {
         method: "POST",
-        body: JSON.stringify(toSend),
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+        }),
         headers: {
           "Content-Type": "application/json",
           // "token":
         },
       });
-      console.log(sendUser.status);
-      //   return postUser();
+      if (sendUser.status === 200) {
+        notify("You are signed up. Log in, please!", "success");
+        setIsSignedUp(true);
+      } else {
+        notify("User insert ERROR", "error");
+      }
     };
     postUser();
-
-    // fetch('http://localhost:5000/users', {
-    //     method: 'POST',
-    //     // We convert the React state to JSON and send it as the POST body
-    //     body: JSON.stringify(this.state)
-    // }).then(function(response) {
-    //     console.log(response)
-    //     return response.json();
-    // });
-  };
-  //   const getMovies = async () => {
-  //     const movies = await fetch(`https://www.omdbapi.com/?s=${userInput}&apikey=4c95cc37`)
-  //     if(movies.status === 200){
-  //       const moviesJson = await movies.json()
-  //       console.log(moviesJson.Search)
-  //       setMovies(moviesJson.Search)
-  //     }else{
-  //       console.log('Error from server')
-  //     }
-  //   }
-  const handleChange = (e) => {
-    switch (e.target.name) {
-      case "firstName":
-        setFirstName(e.target.value);
-        break;
-      case "lastName":
-        setLastName(e.target.value);
-        break;
-      case "email":
-        setEmail(e.target.value);
-        break;
-      case "password":
-        setPassword(e.target.value);
-        break;
-      case "password2":
-        setPassword2(e.target.value);
-        break;
-    }
   };
 
   return (
     <div>
-      <form className="sign-up-form" onSubmit={handleSubmit}>
+        <form className="sign-up-form" onSubmit={handleSubmit}>
         <label htmlFor="firstName">First name</label>
         <input
           //   className={maximumReached(firstName, MAX_LENGTH) ? "length-maximum-reached" : "length-ok"}
@@ -81,7 +72,7 @@ function SignUp() {
           name="firstName"
           type="text"
           value={firstName}
-          onChange={handleChange}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
         {/* <small className="remaining-characters">
@@ -93,7 +84,7 @@ function SignUp() {
           name="lastName"
           type="text"
           value={lastName}
-          onChange={handleChange}
+          onChange={(e) => setLastName(e.target.value)}
           required
         />
         <label htmlFor="email">Email</label>
@@ -102,7 +93,7 @@ function SignUp() {
           name="email"
           type="email"
           value={email}
-          onChange={handleChange}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <label htmlFor="password">Password</label>
@@ -111,7 +102,7 @@ function SignUp() {
           name="password"
           type="password"
           value={password}
-          onChange={handleChange}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
         <label htmlFor="password2">Repeat password</label>
@@ -120,7 +111,7 @@ function SignUp() {
           name="password2"
           type="password"
           value={password2}
-          onChange={handleChange}
+          onChange={(e) => setPassword2(e.target.value)}
           required
         />
         <button type="submit">Sign Up</button>

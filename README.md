@@ -93,7 +93,7 @@ app.use("/api/users", userRouter);
 ```
 to say, that "/" is my application express and to make things more clear - all the routes which starts with "/api/..." will send and recieve json to and from react vite.
 
-In react I add "proxy section in *shop-react-express/client/vite.config.js*
+In react I add "proxy section" in *shop-react-express/client/vite.config.js*
 with this prefix and the address of express server to say that any request what starts with "api" should be forwarded to localhost:5000. But the browser will think that is still a part of react app.
 ```
 export default defineConfig({
@@ -117,4 +117,8 @@ const postUser = async () => {
       });
       ...
 }
+```
+# TOASTS
+```
+shop-react-express/client$ npm i react-toastify
 ```

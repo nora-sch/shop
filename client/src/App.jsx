@@ -6,11 +6,13 @@ import SignUp from "../features/signUp/SignUp";
 import SignIn from "../features/signIn/SignIn"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
+import { ToastContainer, toast } from "react-toastify";
 
 
 function App() {
   return (
     <BrowserRouter>
+        <ToastContainer />
       <NavigationBar />
       <Routes>
         <Route path="/" element={<Home />} />
