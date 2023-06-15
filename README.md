@@ -124,7 +124,7 @@ shop-react-express/client$ npm i react-toastify
 ```
 # REDUX
 ```
-shop-react-express$ npm install @reduxjs/toolkit
+shop-react-express/client$ npm install @reduxjs/toolkit react-redux
 ```
 # API SHOP
 https://fakestoreapi.com/products

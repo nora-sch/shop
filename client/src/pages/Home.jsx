@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard/ProductCard";
+
 const LIMIT = 20;
 function Home() {
   const url = "https://fakestoreapi.com/products?limit=" + LIMIT;
@@ -12,25 +14,13 @@ function Home() {
     };
     getProducts();
   }, []);
-  const addToCart = (addedProduct) => {
-    console.log(addedProduct);
-    //dispatch to store (object in slice) one by one
-  };
+ 
 
   return (
     products.length > 0 && (
       <div>
-        {products.map((pr) => (
-          <div key={pr.id}>
-            <div>{pr.title}</div>
-            <button
-              onClick={() => {
-                addToCart(pr);
-              }}
-            >
-              Add
-            </button>
-          </div>
+        {products.map((prod) => (
+          <ProductCard key={prod.id} pr={prod} />
         ))}
       </div>
     )
