@@ -45,6 +45,7 @@ router.post("/signup", (req, res) => {
     }
   );
 });
+// if (!err && result.length !== 0) {
 
 // ROUTE "/:id"
 router.get("/:id", (req, res) => {

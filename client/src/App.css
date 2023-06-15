@@ -24,7 +24,19 @@ body {
   background-color: #fefcf3;
 
 }
-
+a{
+  color:#713f4b;
+  text-decoration: none !important;
+}
+a:active {
+  color: #713f4b
+}
+a:visited {
+  color: #713f4b
+}
+a:hover {
+  color: #713f4b
+}
 /* div .toast-success .Toastify__toast .Toastify__toast-theme--colored  {
   background-color: #aacb73;
 }

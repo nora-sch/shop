@@ -19,8 +19,8 @@ import { FaUserCircle } from "react-icons/fa";
 // import { logout } from "../features/login/loginSlice";
 
 function NavigationBar(args) {
-//   const user = useSelector((state) => state.login.value);
-//   const dispatch = useDispatch();
+  //   const user = useSelector((state) => state.login.value);
+  //   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,22 +28,28 @@ function NavigationBar(args) {
 
   return (
     <div>
-      <Navbar expand={"xl"} >
-        <NavbarBrand href="/" style={{color:'#713f4b'}}>Shop</NavbarBrand>
+      <Navbar expand={"xl"}>
+        <NavbarBrand href="/" style={{ color: "#713f4b" }}>
+          Shop
+        </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <NavLink tag={RRNavLink} to="/" style={{color:'#713f4b'}}>
+              <NavLink tag={RRNavLink} to="/" style={{ color: "#713f4b" }}>
                 Home
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={RRNavLink} to="/profile" style={{color:'#713f4b'}}>
+              <NavLink
+                tag={RRNavLink}
+                to="/profile"
+                style={{ color: "#713f4b" }}
+              >
                 Profile
               </NavLink>
             </NavItem>
-            </Nav>
+          </Nav>
           {/* {user ? (
             <FaUserCircle style={{ marginRight: "10px", color: "green" }} />
           ) : (
@@ -59,12 +65,9 @@ function NavigationBar(args) {
               Sign In
             </NavLink>
           )} */}
-           <NavLink tag={RRNavLink} to="/sign-up">
-              Sign Up
-            </NavLink>
-           <NavLink tag={RRNavLink} to="/sign-in">
-              Sign In
-            </NavLink>    
+          <NavLink tag={RRNavLink} to="/sign-in">
+            Sign In
+          </NavLink>
         </Collapse>
       </Navbar>
     </div>

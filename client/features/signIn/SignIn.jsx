@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 function SignIn() {
@@ -118,8 +118,16 @@ function SignIn() {
         <Button
           type="submit"
           style={{ width: "100%", backgroundColor: "#DBA39A", border: "none" }}
-        > Sign in
+        >
+          {" "}
+          Sign in
         </Button>
+        <div style={{ display: "flex", flexDirection:"column", justifyContent:'center', alignItems:'center', marginTop:'10px' }}>
+          <p style={{margin:'0px', fontSize:'smaller'}}>Have no account yet?</p>
+          <Link to="/sign-up" >
+            Sign up
+          </Link>
+        </div>
       </Form>
     </div>
   );

@@ -122,3 +122,9 @@ const postUser = async () => {
 ```
 shop-react-express/client$ npm i react-toastify
 ```
+# REDUX
+```
+shop-react-express$ npm install @reduxjs/toolkit
+```
+# API SHOP
+https://fakestoreapi.com/products
