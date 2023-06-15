@@ -14,14 +14,21 @@ import {
   DropdownItem,
   NavbarText,
 } from "reactstrap";
-import { FaUserCircle } from "react-icons/fa";
-// import { useSelector, useDispatch } from "react-redux";
-// import { logout } from "../features/login/loginSlice";
+import { FaUserCircle,  FaShoppingCart, FaCartPlus } from "react-icons/fa";
+
+import { useSelector, useDispatch } from "react-redux";
+
 
 function NavigationBar(args) {
   //   const user = useSelector((state) => state.login.value);
-  //   const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
+  const cart = useSelector((state)=>state.cart.cart);
+  const openCart = ()=>{
+    if(cart.length>0){
+//open sidebar (save true on redux???)
+    }
+  }
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -65,6 +72,7 @@ function NavigationBar(args) {
               Sign In
             </NavLink>
           )} */}
+          <FaShoppingCart onClick={()=>{openCart()}}/> ({cart.length})
           <NavLink tag={RRNavLink} to="/sign-in">
             Sign In
           </NavLink>

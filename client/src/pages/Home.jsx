@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard/ProductCard";
+import styled from "styled-components";
 
 const LIMIT = 20;
 function Home() {
@@ -18,13 +19,20 @@ function Home() {
 
   return (
     products.length > 0 && (
-      <div>
+        <CardsWrapper>
         {products.map((prod) => (
           <ProductCard key={prod.id} pr={prod} />
         ))}
-      </div>
+      </CardsWrapper>
     )
   );
 }
 
 export default Home;
+const CardsWrapper = styled.div`
+width:80%;
+margin: 0 auto;
+display:flex;
+flex-direction:row;
+flex-wrap:wrap;
+justify-content:center;`;

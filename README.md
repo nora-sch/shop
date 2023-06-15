@@ -128,3 +128,11 @@ shop-react-express/client$ npm install @reduxjs/toolkit react-redux
 ```
 # API SHOP
 https://fakestoreapi.com/products
+
+# STYLED COMPONENTS / MUI
+```
+shop-react-express/client$ npm install styled-components@5.3.10
+shop-react-express/client$ npm install @mui/material @emotion/react @emotion/styled
+shop-react-express/client$ npm install @fontsource/roboto
+
+```

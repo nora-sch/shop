@@ -1,19 +1,23 @@
-/* 
-FEFCF3
-F5EBE0
-F0DBDB
-DBA39A
- */
 /* :root{
   --toastify-color-success: #AACB73;
   --toastify-color-error: #DBA39A;
  } */
+
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --main-bg-color: #fefcf3;
+  --light-color: #f5ebe0;
+  --neutral-color: #f0dbdb;
+  --accent-color: #dba39a;
+}
 #root {
   /* max-width: 1280px; */
   margin: 0, auto;
   padding: 0 3rem;
   background-color: #fefcf3;
-  color:#713f4b;
+  color: #713f4b;
+  font-family: "Quicksand", sans-serif;
 }
 body {
   margin: 0;
@@ -22,20 +26,20 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: #fefcf3;
-
+  font-family: "Quicksand", sans-serif;
 }
-a{
-  color:#713f4b;
+a {
+  color: #713f4b;
   text-decoration: none !important;
 }
 a:active {
-  color: #713f4b
+  color: #713f4b;
 }
 a:visited {
-  color: #713f4b
+  color: #713f4b;
 }
 a:hover {
-  color: #713f4b
+  color: #713f4b;
 }
 /* div .toast-success .Toastify__toast .Toastify__toast-theme--colored  {
   background-color: #aacb73;
