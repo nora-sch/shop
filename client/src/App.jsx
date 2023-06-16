@@ -5,7 +5,7 @@ import Profile from "./pages/Profile";
 import SignUp from "./features/signUp/SignUp";
 import SignIn from "./features/signIn/SignIn";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import { ToastContainer } from "react-toastify";
 import SideBar from "./components/SideBar";
 import styled from "styled-components";

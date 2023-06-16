@@ -15,6 +15,7 @@ import { FaUserCircle, FaShoppingCart, FaCartPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import { deleteOne, deleteAll } from "./ProductCard/cartSlice";
+
 import SearchBar from "./SearchBar";
 
 function getTotal(cart) {
@@ -29,9 +30,10 @@ function NavigationBar(args) {
   //   const user = useSelector((state) => state.login.value);
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+  const prod = useSelector((state) => state.products.products);
   const [isOpenCart, setIsOpenCart] = useState(false);
   let [total, setTotal] = useState(getTotal(cart));
-
+console.log(prod);
   const openCart = () => {
     if (cart.length > 0) {
       setIsOpenCart(!isOpenCart);
