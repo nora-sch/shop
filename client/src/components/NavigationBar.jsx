@@ -33,7 +33,7 @@ function NavigationBar(args) {
   const prod = useSelector((state) => state.products.products);
   const [isOpenCart, setIsOpenCart] = useState(false);
   let [total, setTotal] = useState(getTotal(cart));
-console.log(prod);
+  // console.log(prod);
   const openCart = () => {
     if (cart.length > 0) {
       setIsOpenCart(!isOpenCart);
@@ -72,7 +72,7 @@ console.log(prod);
               </NavLink>
             </NavItem>
           </Nav>
-          <SearchBar/>
+          <SearchBar />
           {/* {user ? (
             <FaUserCircle style={{ marginRight: "10px", color: "green" }} />
           ) : (
@@ -114,7 +114,8 @@ console.log(prod);
         </Collapse>
       </Navbar>
       {cart.length > 0 && isOpenCart && (
-        <div className='side-bar'
+        <div
+          className="side-bar"
           style={{
             height: "100vh",
             width: "30%",
@@ -123,10 +124,10 @@ console.log(prod);
             position: "absolute",
             right: "0",
             padding: "15px",
-            marginTop: "5px"
+            marginTop: "5px",
           }}
         >
-          <Table hover style={{ fontSize: "15px" , backgroundColor:'#F5EBE0'}}>
+          <Table hover style={{ fontSize: "15px", backgroundColor: "#F5EBE0" }}>
             <thead>
               <tr>
                 <th></th>
@@ -152,17 +153,21 @@ console.log(prod);
                 </tr>
               ))}
             </tbody>
-            <div>
+          </Table>
+          <div>
             Total :
             <span style={{ fontWeight: "bold" }}>{total.toFixed(2)} €</span>
           </div>
-          </Table>
-      
           <Button
             onClick={() => {
               dispatch(deleteAll());
             }}
-            style={{backgroundColor:"#dba39a", color:'#713f4b', border:'none', fontWeight:'bold'}}
+            style={{
+              backgroundColor: "#dba39a",
+              color: "#713f4b",
+              border: "none",
+              fontWeight: "bold",
+            }}
           >
             Delete All
           </Button>

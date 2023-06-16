@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "./cartSlice";
+import { add as addFav, remove } from "./favoritesSlice";
 import { FaCartPlus } from "react-icons/fa";
+import { RiHeart3Line, RiHeart3Fill } from "react-icons/ri";
 
 import {
   Button,
@@ -12,13 +14,25 @@ import {
   CardTitle,
 } from "reactstrap";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 function ProductCard(pr) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const isAdded = cart.find((item) => item.id === pr.pr.id);
+  const [isFavorite, setIsFavorite] = useState(false);
   const addToCart = (addedProduct) => {
     !isAdded && dispatch(add(addedProduct));
+  };
+  const favorites = useSelector((state) => state.favorites.favorites);
+  const addFavorite = () => {
+    if (!isFavorite) {
+      setIsFavorite(true);
+      dispatch(addFav(pr.pr));
+    } else {
+      setIsFavorite(false);
+      dispatch(remove(pr.pr));
+    }
   };
   return (
     <Card
@@ -30,16 +44,44 @@ function ProductCard(pr) {
       }}
     >
       <ImgWrapper>
-        <img
-          style={{
-            height: "auto",
-
-            width: "100%",
-            maxHeight: "100%",
+        {isFavorite ? (
+          <RiHeart3Fill
+            onClick={() => {
+              addFavorite();
+            }}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              fontSize: "30px",
+            }}
+          />
+        ) : (
+          <RiHeart3Line
+          onClick={() => {
+            addFavorite();
           }}
-          alt={pr.pr.title}
-          src={pr.pr.image}
-        />
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              fontSize: "30px",
+            }}
+          />
+        )}
+
+        <Link to={"/products/" + pr.pr.id}>
+          <img
+            style={{
+              height: "auto",
+
+              width: "100%",
+              maxHeight: "100%",
+            }}
+            alt={pr.pr.title}
+            src={pr.pr.image}
+          />
+        </Link>
       </ImgWrapper>
 
       <CardBody
@@ -74,7 +116,7 @@ function ProductCard(pr) {
         <CardBottom>
           <Price>{pr.pr.price.toFixed(2)} €</Price>
           {isAdded ? (
-            <Button 
+            <Button
               onClick={() => {
                 addToCart(pr.pr);
               }}
@@ -84,13 +126,13 @@ function ProductCard(pr) {
                 alignItems: "center",
                 width: "30%",
                 height: "40px",
-                border:'none',
+                border: "none",
               }}
             >
-              <FaCartPlus style={{fontSize:'22px'}}/>
+              <FaCartPlus style={{ fontSize: "22px" }} />
             </Button>
           ) : (
-            <Button 
+            <Button
               onClick={() => {
                 addToCart(pr.pr);
               }}
@@ -100,12 +142,12 @@ function ProductCard(pr) {
                 alignItems: "center",
                 width: "30%",
                 height: "40px",
-                border:'none',
+                border: "none",
                 backgroundColor: "#DBA39A",
                 color: "white",
               }}
             >
-                <FaCartPlus style={{fontSize:'22px'}}/>
+              <FaCartPlus style={{ fontSize: "22px" }} />
             </Button>
           )}
         </CardBottom>
@@ -120,7 +162,7 @@ const ImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70%;
+  height: 75%;
 `;
 const CardBottom = styled.div`
   display: flex;
