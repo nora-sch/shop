@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import SideBar from "./components/SideBar";
 import styled from "styled-components";
 import Product from "./pages/Product";
+import Auth from "./Auth";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<Product />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Auth><Profile /></Auth>} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>

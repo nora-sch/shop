@@ -55,14 +55,18 @@ function SignUp() {
           // "token":
         },
       });
-      const body = await sendUser.json();
-      if (body.status === 201) {
-        setIsSignedUp(true);
-        notify(body.message, "success");
-      } else if (body.status === 400) {
-        notify(body.message, "error");
+      if (sendUser.status === 200) {
+        const body = await sendUser.json();
+        if (body.status === 201) {
+          setIsSignedUp(true);
+          notify(body.message, "success");
+        } else if (body.status === 400) {
+          notify(body.message, "error");
+        } else {
+          notify(body.error, "error");
+        }
       } else {
-        notify(body.error, "error");
+        notify(`Server error ${sendUser.status}`, "error");
       }
     };
     postUser();

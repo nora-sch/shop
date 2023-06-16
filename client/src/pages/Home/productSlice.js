@@ -5,6 +5,7 @@ export const productSlice = createSlice({
   initialState: {
     products: [],
     searchFor: [],
+    key:'',
   },
   reducers: {
     addAll: (state, action) => {
@@ -14,6 +15,7 @@ export const productSlice = createSlice({
       state.searchFor = state.products.filter((prod) =>
         prod.title.toLowerCase().includes(action.payload.toLowerCase())
       );
+      state.key = action.payload;
       console.log(state.searchFor);
     },
   },

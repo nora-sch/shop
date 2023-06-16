@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink as RRNavLink } from "react-router-dom";
+import { NavLink as RRNavLink, useNavigate } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -15,6 +15,7 @@ import { FaUserCircle, FaShoppingCart, FaCartPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import { deleteOne, deleteAll } from "./ProductCard/cartSlice";
+import { remove } from "../features/signIn/signInSlice";
 
 import SearchBar from "./SearchBar";
 
@@ -31,6 +32,8 @@ function NavigationBar(args) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const prod = useSelector((state) => state.products.products);
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
   const [isOpenCart, setIsOpenCart] = useState(false);
   let [total, setTotal] = useState(getTotal(cart));
   // console.log(prod);
@@ -38,6 +41,10 @@ function NavigationBar(args) {
     if (cart.length > 0) {
       setIsOpenCart(!isOpenCart);
     }
+  };
+  const logOut = () => {
+    navigate("/");
+    dispatch(remove());
   };
   useEffect(() => {
     const newTotalCount = getTotal(cart);
@@ -47,11 +54,10 @@ function NavigationBar(args) {
   // navbar
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
-
   return (
     <div>
       <Navbar expand={"xl"}>
-        <NavbarBrand href="/" style={{ color: "#713f4b" }}>
+        <NavbarBrand style={{ color: "#713f4b" }}>
           Shop
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -62,15 +68,17 @@ function NavigationBar(args) {
                 Home
               </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink
-                tag={RRNavLink}
-                to="/profile"
-                style={{ color: "#713f4b" }}
-              >
-                Profile
-              </NavLink>
-            </NavItem>
+            {user && (
+              <NavItem>
+                <NavLink
+                  tag={RRNavLink}
+                  to="/profile"
+                  style={{ color: "#713f4b" }}
+                >
+                  Profile
+                </NavLink>
+              </NavItem>
+            )}
           </Nav>
           <SearchBar />
           {/* {user ? (
@@ -108,9 +116,13 @@ function NavigationBar(args) {
           >
             {cart.length}
           </span>
-          <NavLink tag={RRNavLink} to="/sign-in">
-            Sign In
-          </NavLink>
+          {user ? (
+            <div onClick={() => logOut()}>Logout</div>
+          ) : (
+            <NavLink tag={RRNavLink} to="/sign-in">
+              Sign In
+            </NavLink>
+          )}
         </Collapse>
       </Navbar>
       {cart.length > 0 && isOpenCart && (

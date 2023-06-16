@@ -19,6 +19,7 @@ function Product() {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const cart = useSelector((state) => state.cart.cart);
+  const user = useSelector((state) => state.user.user);
   const isAdded = cart.find((item) => item.id === product.id);
   const dispatch = useDispatch();
   const addToCart = (addedProduct) => {
@@ -87,44 +88,47 @@ function Product() {
             <div>{product.category}</div>
           </CardSubtitle>
         </div>
-        <CardBottom>
-          {/* <Price>{product.price.toFixed(2)} €</Price> */}
-          {isAdded ? (
-            <Button
-              //   onClick={() => {
-              //     addToCart(product);
-              //   }}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "30%",
-                height: "40px",
-                border: "none",
-              }}
-            >
-              <FaCartPlus style={{ fontSize: "22px" }} />
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                addToCart(product);
-              }}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "30%",
-                height: "40px",
-                border: "none",
-                backgroundColor: "#DBA39A",
-                color: "white",
-              }}
-            >
-              <FaCartPlus style={{ fontSize: "22px" }} />
-            </Button>
-          )}
-        </CardBottom>
+        {user && (
+          <CardBottom>
+            {/* <Price>{product.price.toFixed(2)} €</Price> */}
+
+            {isAdded ? (
+              <Button
+                //   onClick={() => {
+                //     addToCart(product);
+                //   }}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "30%",
+                  height: "40px",
+                  border: "none",
+                }}
+              >
+                <FaCartPlus style={{ fontSize: "22px" }} />
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  addToCart(product);
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "30%",
+                  height: "40px",
+                  border: "none",
+                  backgroundColor: "#DBA39A",
+                  color: "white",
+                }}
+              >
+                <FaCartPlus style={{ fontSize: "22px" }} />
+              </Button>
+            )}
+          </CardBottom>
+        )}
       </CardBody>
     </Card>
   );

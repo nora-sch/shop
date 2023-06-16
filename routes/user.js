@@ -31,7 +31,7 @@ router.post("/signup", async (req, res) => {
   //     "lastName":"Sumane",
   //     "email":"norah@inbox.lv"
   // }
- dbConnection.query(getOneByEmail, [email], (err, result, fields) => {
+  dbConnection.query(getOneByEmail, [email], (err, result, fields) => {
     if (!err) {
       if (result.length === 0) {
         dbConnection.query(
@@ -44,7 +44,7 @@ router.post("/signup", async (req, res) => {
                 message: `Welcome, ${firstName}! Log in, please!`,
               });
             } else {
-              res.json({ status: 500, error: "second" });
+              res.json({ status: 500, error: err });
             }
           }
         );
@@ -55,7 +55,7 @@ router.post("/signup", async (req, res) => {
         });
       }
     } else {
-      res.json({ status: 500, error: "first" });
+      res.json({ status: 500, error: err });
     }
   });
 });
@@ -67,11 +67,26 @@ router.post("/signin", (req, res) => {
   //     "email":"norah@inbox.lv"
   // }
   dbConnection.query(getOneByEmail, [email], (err, result, fields) => {
+    console.log(result.length);
     if (!err && result.length !== 0) {
-      res.json({ status: 201, user: result });
+      console.log(result);
+      const formattedUser = {
+        id: result[0].id,
+        firstName: result[0].first_name,
+        lastName: result[0].last_name,
+        email: result[0].email,
+        createdAt: result[0].created_at,
+        updatedAt: result[0].updated_at,
+      };
+      // const jsonResponse =  formattedUser.json()
+      res.json({ status: 201, user: formattedUser, message: `Hello, ${result[0].first_name}` });
+    } else if (!err && result.length === 0) {
+      res.json({
+        status: 400,
+        message: "Check your login information or sign up!",
+      });
     } else {
-      console.log(err);
-      res.status(500).send(err);
+      res.json({ status: 500, error: err });
     }
   });
 });

@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 function ProductCard(pr) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+  const user = useSelector((state) => state.user.user);
   const isAdded = cart.find((item) => item.id === pr.pr.id);
   const [isFavorite, setIsFavorite] = useState(false);
   const addToCart = (addedProduct) => {
@@ -58,9 +59,9 @@ function ProductCard(pr) {
           />
         ) : (
           <RiHeart3Line
-          onClick={() => {
-            addFavorite();
-          }}
+            onClick={() => {
+              addFavorite();
+            }}
             style={{
               position: "absolute",
               top: "10px",
@@ -113,42 +114,47 @@ function ProductCard(pr) {
             <Rating>{pr.pr.rating.rate}</Rating> */}
           </CardSubtitle>
         </div>
+
         <CardBottom>
           <Price>{pr.pr.price.toFixed(2)} €</Price>
-          {isAdded ? (
-            <Button
-              onClick={() => {
-                addToCart(pr.pr);
-              }}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "30%",
-                height: "40px",
-                border: "none",
-              }}
-            >
-              <FaCartPlus style={{ fontSize: "22px" }} />
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                addToCart(pr.pr);
-              }}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "30%",
-                height: "40px",
-                border: "none",
-                backgroundColor: "#DBA39A",
-                color: "white",
-              }}
-            >
-              <FaCartPlus style={{ fontSize: "22px" }} />
-            </Button>
+          {user && (
+            <div style={{ width: "28%" }}>
+              {isAdded ? (
+                <Button
+                  onClick={() => {
+                    addToCart(pr.pr);
+                  }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "40px",
+                    border: "none",
+                  }}
+                >
+                  <FaCartPlus style={{ fontSize: "22px" }} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    addToCart(pr.pr);
+                  }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "40px",
+                    border: "none",
+                    backgroundColor: "#DBA39A",
+                    color: "white",
+                  }}
+                >
+                  <FaCartPlus style={{ fontSize: "22px" }} />
+                </Button>
+              )}
+            </div>
           )}
         </CardBottom>
       </CardBody>

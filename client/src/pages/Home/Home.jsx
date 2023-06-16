@@ -10,6 +10,7 @@ function Home() {
   const [products, setProducts] = useState({});
   const dispatch = useDispatch();
   const filteredProducts = useSelector((state) => state.products.searchFor);
+  const keyWord = useSelector((state) => state.products.key);
   useEffect(() => {
     const getProducts = async () => {
       const fetchProducts = await fetch(url);
@@ -23,11 +24,11 @@ function Home() {
   return (
     products.length > 0 && (
       <CardsWrapper>
-        {filteredProducts.length>0?filteredProducts.map((prod) => (
-          <ProductCard key={prod.id} pr={prod} />
-        )):products.map((prod) => (
-          <ProductCard key={prod.id} pr={prod} />
-        ))}
+        {filteredProducts.length > 0 || keyWord.length > 0
+          ? filteredProducts.map((prod) => (
+              <ProductCard key={prod.id} pr={prod} />
+            ))
+          : products.map((prod) => <ProductCard key={prod.id} pr={prod} />)}
       </CardsWrapper>
     )
   );

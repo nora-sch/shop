@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { add } from "./signInSlice";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignedIn, setIsSignedIn] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (isSignedIn) {
       navigate("/profile");
@@ -47,13 +49,19 @@ function SignIn() {
           // "token":
         },
       });
+
       if (sendLogin.status === 200) {
         const user = await sendLogin.json();
-        console.log(user);
-        notify(`Hello, ${user.firstName}!`, "success");
-        setIsSignedIn(true);
+        if (user.status === 201) {
+          notify(user.message, "success");
+          setIsSignedIn(true);
+          dispatch(add(user.user));
+        } else {
+          notify(user.message, "error");
+        }
       } else {
-        notify("Check your login information or sign up!", "error");
+        const error = await sendLogin.json();
+        notify(error.error, "error");
       }
     };
     getUser();
@@ -121,11 +129,19 @@ function SignIn() {
         >
           Sign in
         </Button>
-        <div style={{ display: "flex", flexDirection:"column", justifyContent:'center', alignItems:'center', marginTop:'10px' }}>
-          <p style={{margin:'0px', fontSize:'smaller'}}>Have no account yet?</p>
-          <Link to="/sign-up" >
-            Sign up
-          </Link>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "10px",
+          }}
+        >
+          <p style={{ margin: "0px", fontSize: "smaller" }}>
+            Have no account yet?
+          </p>
+          <Link to="/sign-up">Sign up</Link>
         </div>
       </Form>
     </div>
