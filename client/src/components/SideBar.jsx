@@ -25,7 +25,7 @@ function SideBar() {
 
   return (
     cart.length > 0 &&
-    isOpen && (
+    isOpenCart && (
       <div
         style={{
           height: "100vh",

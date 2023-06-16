@@ -16,7 +16,7 @@ function App() {
       <ToastContainer />
       <NavigationBar />
       <Main>
-        <SideBar />
+        {/* <SideBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />

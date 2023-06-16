@@ -15,7 +15,7 @@
   /* max-width: 1280px; */
   margin: 0, auto;
   padding: 0 3rem;
-  background-color: #fefcf3;
+  background-color: #f5ebe0;
   color: #713f4b;
   font-family: "Quicksand", sans-serif;
 }
@@ -41,6 +41,8 @@ a:visited {
 a:hover {
   color: #713f4b;
 }
+
+
 /* div .toast-success .Toastify__toast .Toastify__toast-theme--colored  {
   background-color: #aacb73;
 }

@@ -87,7 +87,7 @@ function ProductCard(pr) {
                 border:'none',
               }}
             >
-              <FaCartPlus />
+              <FaCartPlus style={{fontSize:'22px'}}/>
             </Button>
           ) : (
             <Button 
@@ -105,7 +105,7 @@ function ProductCard(pr) {
                 color: "white",
               }}
             >
-              <FaCartPlus />
+                <FaCartPlus style={{fontSize:'22px'}}/>
             </Button>
           )}
         </CardBottom>

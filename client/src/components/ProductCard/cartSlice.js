@@ -15,6 +15,7 @@ export const cartSlice = createSlice({
     deleteAll: (state) => {
       state.cart = [];
     },
+
   },
 });
 

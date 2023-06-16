@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import {
   Collapse,
@@ -8,29 +8,42 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText,
+  Table,
+  Button,
 } from "reactstrap";
-import { FaUserCircle,  FaShoppingCart, FaCartPlus } from "react-icons/fa";
-
+import { FaUserCircle, FaShoppingCart, FaCartPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
+import { RxCross2 } from "react-icons/rx";
+import { deleteOne, deleteAll } from "./ProductCard/cartSlice";
+import SearchBar from "./SearchBar";
 
+function getTotal(cart) {
+  let totalCount = 0;
+  cart.forEach((item) => {
+    totalCount = totalCount + item.price;
+  });
+  return totalCount;
+}
 
 function NavigationBar(args) {
   //   const user = useSelector((state) => state.login.value);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cart);
+  const [isOpenCart, setIsOpenCart] = useState(false);
+  let [total, setTotal] = useState(getTotal(cart));
 
-  const cart = useSelector((state)=>state.cart.cart);
-  const openCart = ()=>{
-    if(cart.length>0){
-//open sidebar (save true on redux???)
+  const openCart = () => {
+    if (cart.length > 0) {
+      setIsOpenCart(!isOpenCart);
     }
-  }
-  const [isOpen, setIsOpen] = useState(false);
+  };
+  useEffect(() => {
+    const newTotalCount = getTotal(cart);
+    setTotal(newTotalCount);
+  }, [cart]);
 
+  // navbar
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -57,6 +70,7 @@ function NavigationBar(args) {
               </NavLink>
             </NavItem>
           </Nav>
+          <SearchBar/>
           {/* {user ? (
             <FaUserCircle style={{ marginRight: "10px", color: "green" }} />
           ) : (
@@ -72,12 +86,86 @@ function NavigationBar(args) {
               Sign In
             </NavLink>
           )} */}
-          <FaShoppingCart onClick={()=>{openCart()}}/> ({cart.length})
+          <FaShoppingCart
+            onClick={() => {
+              openCart();
+            }}
+          />
+          <span
+            style={{
+              width: "24px",
+              height: "24px",
+              borderRadius: "24px",
+              marginLeft: "5px",
+              backgroundColor: "#dba39a",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "12px",
+            }}
+          >
+            {cart.length}
+          </span>
           <NavLink tag={RRNavLink} to="/sign-in">
             Sign In
           </NavLink>
         </Collapse>
       </Navbar>
+      {cart.length > 0 && isOpenCart && (
+        <div className='side-bar'
+          style={{
+            height: "100vh",
+            width: "30%",
+            zIndex: "1000",
+            backgroundColor: "#F5EBE0",
+            position: "absolute",
+            right: "0",
+            padding: "15px",
+            marginTop: "5px"
+          }}
+        >
+          <Table hover style={{ fontSize: "15px" , backgroundColor:'#F5EBE0'}}>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item, i) => (
+                <tr key={item.id}>
+                  <th scope="row">{i + 1}</th>
+                  <td>{item.title}</td>
+                  <td style={{ width: "18%" }}>{item.price.toFixed(2)} €</td>
+                  <td>
+                    <RxCross2
+                      onClick={() => {
+                        dispatch(deleteOne(item.id));
+                      }}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <div>
+            Total :{" "}
+            <span style={{ fontWeight: "bold" }}>{total.toFixed(2)} €</span>
+          </div>
+          </Table>
+      
+          <Button
+            onClick={() => {
+              dispatch(deleteAll());
+            }}
+            style={{backgroundColor:"#dba39a", color:'#713f4b', border:'none', fontWeight:'bold'}}
+          >
+            Delete All
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
