@@ -14,6 +14,7 @@ export const productSlice = createSlice({
       state.searchFor = state.products.filter((prod) =>
         prod.title.toLowerCase().includes(action.payload.toLowerCase())
       );
+      console.log(state.searchFor);
     },
   },
 });

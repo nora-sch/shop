@@ -153,7 +153,7 @@ console.log(prod);
               ))}
             </tbody>
             <div>
-            Total :{" "}
+            Total :
             <span style={{ fontWeight: "bold" }}>{total.toFixed(2)} €</span>
           </div>
           </Table>

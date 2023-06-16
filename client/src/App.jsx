@@ -9,6 +9,7 @@ import Home from "./pages/Home/Home";
 import { ToastContainer } from "react-toastify";
 import SideBar from "./components/SideBar";
 import styled from "styled-components";
+import Product from "./pages/Product";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/* <SideBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products/:id" element={<Product />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
