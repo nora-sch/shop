@@ -55,11 +55,14 @@ function SignUp() {
           // "token":
         },
       });
-      if (sendUser.status === 200) {
-        notify(`Welcome, ${firstName}! Log in, please!`, "success");
+      const body = await sendUser.json();
+      if (body.status === 201) {
         setIsSignedUp(true);
+        notify(body.message, "success");
+      } else if (body.status === 400) {
+        notify(body.message, "error");
       } else {
-        notify("User insert ERROR", "error");
+        notify(body.error, "error");
       }
     };
     postUser();
@@ -71,15 +74,29 @@ function SignUp() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-       height:'100vh',
-     
+        height: "100vh",
       }}
     >
-      <Form style={{ width: "25%",    backgroundColor:"#F0DBDB", padding:'1rem', borderRadius:'10px'}} onSubmit={handleSubmit}>
-        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
-          <Label style={{ margin:'0px'}} for="firstName">First name</Label>
+      <Form
+        style={{
+          width: "25%",
+          backgroundColor: "#F0DBDB",
+          padding: "1rem",
+          borderRadius: "10px",
+        }}
+        onSubmit={handleSubmit}
+      >
+        <FormGroup
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Label style={{ margin: "0px" }} for="firstName">
+            First name
+          </Label>
           <Input
-           
             name="firstName"
             type="text"
             value={firstName}
@@ -88,8 +105,16 @@ function SignUp() {
             required
           />
         </FormGroup>
-        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
-          <Label style={{ margin:'0px'}} for="lastName">Last name</Label>
+        <FormGroup
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Label style={{ margin: "0px" }} for="lastName">
+            Last name
+          </Label>
           <Input
             className="text-input"
             name="lastName"
@@ -101,8 +126,16 @@ function SignUp() {
           />
         </FormGroup>
 
-        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
-          <Label style={{ margin:'0px'}} for="email">Email</Label>
+        <FormGroup
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Label style={{ margin: "0px" }} for="email">
+            Email
+          </Label>
           <Input
             className="text-input"
             name="email"
@@ -113,8 +146,16 @@ function SignUp() {
             required
           />
         </FormGroup>
-        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
-          <Label style={{ margin:'0px'}} for="password">Password</Label>
+        <FormGroup
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Label style={{ margin: "0px" }} for="password">
+            Password
+          </Label>
           <Input
             className="text-input"
             name="password"
@@ -125,8 +166,14 @@ function SignUp() {
             required
           />
         </FormGroup>
-        <FormGroup style={{ display: "flex", flexDirection: "column" , justifyContent:'flex-start'}}>
-          <Label style={{ margin:'0px'}} for="password2"></Label>
+        <FormGroup
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Label style={{ margin: "0px" }} for="password2"></Label>
           <Input
             className="text-input"
             name="password2"
@@ -137,7 +184,12 @@ function SignUp() {
             required
           />
         </FormGroup>
-        <Button type="submit" style={{width:'100%', backgroundColor:'#DBA39A', border:'none'}}>Sign up</Button>
+        <Button
+          type="submit"
+          style={{ width: "100%", backgroundColor: "#DBA39A", border: "none" }}
+        >
+          Sign up
+        </Button>
       </Form>
     </div>
   );

@@ -40,8 +40,6 @@ function SignIn() {
       const sendLogin = await fetch("/api/users/signin", {
         method: "POST",
         body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
           email: email,
         }),
         headers: {
@@ -50,7 +48,9 @@ function SignIn() {
         },
       });
       if (sendLogin.status === 200) {
-        notify(`Hello, ${firstName}!`, "success");
+        const user = await sendLogin.json();
+        console.log(user);
+        notify(`Hello, ${user.firstName}!`, "success");
         setIsSignedIn(true);
       } else {
         notify("Check your login information or sign up!", "error");
@@ -119,7 +119,6 @@ function SignIn() {
           type="submit"
           style={{ width: "100%", backgroundColor: "#DBA39A", border: "none" }}
         >
-          {" "}
           Sign in
         </Button>
         <div style={{ display: "flex", flexDirection:"column", justifyContent:'center', alignItems:'center', marginTop:'10px' }}>
