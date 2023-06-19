@@ -248,6 +248,16 @@ router.get("/:id/cart", async (req, res) => {
   });
 });
 
+router.get("/:id/favorites", (req, res) => {
+  dbConnection.query(getFavorites, [1], (err, result, fields) => {
+    if (!err) {
+      // console.log(result[0].favorites)
+      res.status(200).json({ favorites: result[0].favorites });
+    } else {
+      res.status(500).send("Error searching the favorites of user");
+    }
+  });
+});
 router.put("/:id/favorites", async (req, res) => {
   //   {
   //     "favorite": {

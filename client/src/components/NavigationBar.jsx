@@ -222,6 +222,7 @@ function NavigationBar(args) {
             <thead>
               <tr>
                 <th></th>
+                <th></th>
                 <th>Product Name</th>
                 <th>Price</th>
                 <th></th>
@@ -231,6 +232,7 @@ function NavigationBar(args) {
               {cart.map((item, i) => (
                 <tr key={item.id}>
                   <th scope="row">{i + 1}</th>
+                  <td><img style={{objectFit:'cover', width:'30px'}} src={item.image}/></td>
                   <td>{item.title}</td>
                   <td style={{ width: "18%" }}>{item.price.toFixed(2)} €</td>
                   <td>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "./cartSlice";
 import { add as addFav, remove } from "./favoritesSlice";
@@ -58,28 +58,35 @@ const updateFavorites = async (favorite, action) => {
     notify(`Server error ${sendFavorite.status}`, "error");
   }
 };
-function ProductCard(pr) {
+function ProductCard(props) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const user = useSelector((state) => state.user.user);
-  const isAdded = cart.find((item) => item.id === pr.pr.id);
+  const isAdded = cart.find((item) => item.id === props.pr.id);
   const [isFavorite, setIsFavorite] = useState(false);
   const addToCart = (addedProduct) => {
     !isAdded && dispatch(add(addedProduct));
   };
-  const favorites = useSelector((state) => state.favorites.favorites);
+  // const favorites = useSelector((state) => state.favorites.favorites);
 
   const addFavorite = () => {
     if (!isFavorite) {
       setIsFavorite(true);
-      dispatch(addFav(pr.pr));
-      updateFavorites(pr.pr, 'added to');
+      // dispatch(addFav(props.pr));
+      updateFavorites(props.pr, "added to");
     } else {
       setIsFavorite(false);
-      dispatch(remove(pr.pr));
-      updateFavorites(pr.pr, 'removed from');
+      // dispatch(remove(props.pr));
+      updateFavorites(props.pr, "removed from");
     }
   };
+  useEffect(() => {
+    if (props.fav && props.fav.includes(props.pr.id)) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, []);
   return (
     <Card
       style={{
@@ -100,6 +107,7 @@ function ProductCard(pr) {
               top: "10px",
               right: "10px",
               fontSize: "30px",
+              color:"#dba39a",
             }}
           />
         ) : (
@@ -112,11 +120,12 @@ function ProductCard(pr) {
               top: "10px",
               right: "10px",
               fontSize: "30px",
+              color:"lightgrey",
             }}
           />
         )}
 
-        <Link to={"/products/" + pr.pr.id}>
+        <Link to={"/products/" + props.pr.id}>
           <img
             style={{
               height: "auto",
@@ -124,8 +133,8 @@ function ProductCard(pr) {
               width: "100%",
               maxHeight: "100%",
             }}
-            alt={pr.pr.title}
-            src={pr.pr.image}
+            alt={props.pr.title}
+            src={props.pr.image}
           />
         </Link>
       </ImgWrapper>
@@ -140,9 +149,9 @@ function ProductCard(pr) {
         <div>
           <CardHeader>
             <CardTitle tag="h6" style={{ width: "90%" }}>
-              {pr.pr.title}
+              {props.pr.title}
             </CardTitle>
-            <Rating>{pr.pr.rating.rate}</Rating>
+            <Rating>{props.pr.rating.rate}</Rating>
           </CardHeader>
           <CardSubtitle
             className="mb-2 text-muted"
@@ -161,13 +170,13 @@ function ProductCard(pr) {
         </div>
 
         <CardBottom>
-          <Price>{pr.pr.price.toFixed(2)} €</Price>
+          <Price>{props.pr.price.toFixed(2)} €</Price>
           {user && (
             <div style={{ width: "28%" }}>
               {isAdded ? (
                 <Button
                   onClick={() => {
-                    addToCart(pr.pr);
+                    addToCart(props.pr);
                   }}
                   style={{
                     display: "flex",
@@ -183,7 +192,7 @@ function ProductCard(pr) {
               ) : (
                 <Button
                   onClick={() => {
-                    addToCart(pr.pr);
+                    addToCart(props.pr);
                   }}
                   style={{
                     display: "flex",

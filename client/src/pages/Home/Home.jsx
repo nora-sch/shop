@@ -6,8 +6,10 @@ import { addAll } from "./productSlice";
 
 const LIMIT = 20;
 function Home() {
+  const user = useSelector((state) => state.user.user);
   const url = "https://fakestoreapi.com/products?limit=" + LIMIT;
   const [products, setProducts] = useState({});
+  const [favorites, setFavorites] = useState(null);
   const dispatch = useDispatch();
   const filteredProducts = useSelector((state) => state.products.searchFor);
   const keyWord = useSelector((state) => state.products.key);
@@ -18,6 +20,13 @@ function Home() {
       setProducts(productsFetched);
       dispatch(addAll(productsFetched));
     };
+
+    const getUserFavorites = async () => {
+      const fetchFavorites = await fetch("api/users/:id/favorites");
+      const favoritesFetched = await fetchFavorites.json();
+      setFavorites(favoritesFetched.favorites);
+    };
+    getUserFavorites();
     getProducts();
   }, []);
 
@@ -26,9 +35,11 @@ function Home() {
       <CardsWrapper>
         {filteredProducts.length > 0 || keyWord.length > 0
           ? filteredProducts.map((prod) => (
-              <ProductCard key={prod.id} pr={prod} />
+              <ProductCard key={prod.id} pr={prod} fav={favorites} />
             ))
-          : products.map((prod) => <ProductCard key={prod.id} pr={prod} />)}
+          : products.map((prod) => (
+              <ProductCard key={prod.id} pr={prod} fav={favorites} />
+            ))}
       </CardsWrapper>
     )
   );
