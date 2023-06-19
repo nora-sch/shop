@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import NavigationBar from "./components/NavigationBar";
 import Profile from "./pages/Profile";
@@ -22,7 +22,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<Product />} />
-          <Route path="/profile" element={<Auth><Profile /></Auth>} />
+          <Route
+            path="/profile"
+            element={
+              <Auth>
+                <Profile />
+              </Auth>
+            }
+          />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
