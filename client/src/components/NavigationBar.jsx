@@ -14,7 +14,7 @@ import {
 import { FaUserCircle, FaShoppingCart, FaCartPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { deleteOne, deleteAll } from "./ProductCard/cartSlice";
+import { deleteOne, deleteAll, add } from "./ProductCard/cartSlice";
 import { remove } from "../features/signIn/signInSlice";
 
 import SearchBar from "./SearchBar";
@@ -94,7 +94,40 @@ function NavigationBar(args) {
   const saveCartToDB = (cart) => {
     postCart(cart);
   };
+
+  const url = "https://fakestoreapi.com/products/";
+  const arrayOfProducts = [];
+  const getProduct = async (id) => {
+    const fetchProduct = await fetch(url + id);
+    const productFetched = await fetchProduct.json();
+    dispatch(add(productFetched));
+  };
+
+  const getCartFromDB = () => {
+    const getCart = async () => {
+      const getItem = await fetch("/api/users/:id/cart", {
+        method: "GET",
+      });
+      if (getItem.status === 200) {
+        const body = await getItem.json();
+        if (body.status === 200) {
+          dispatch(deleteAll());
+          body.cart.map((prodId) => getProduct(prodId));
+          // console.log(cart);
+          notify(body.message, "success");
+        } else if (body.status === 400) {
+          notify(body.message, "error");
+        } else {
+          notify(body.error, "error");
+        }
+      } else {
+        notify(`Server error ${getItem.status}`, "error");
+      }
+    };
+    getCart();
+  };
   useEffect(() => {
+    // console.log(cart);
     const newTotalCount = getTotal(cart);
     setTotal(newTotalCount);
   }, [cart]);
@@ -241,6 +274,19 @@ function NavigationBar(args) {
             }}
           >
             Save cart
+          </Button>
+          <Button
+            onClick={() => {
+              getCartFromDB();
+            }}
+            style={{
+              backgroundColor: "#dba39a",
+              color: "#713f4b",
+              border: "none",
+              fontWeight: "bold",
+            }}
+          >
+            Get cart
           </Button>
         </div>
       )}

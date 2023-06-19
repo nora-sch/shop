@@ -206,30 +206,43 @@ router.post("/:id/cart", async (req, res) => {
   const productIdsTable = cart.map((product) => product.id);
   console.log(productIdsTable);
   // const productIdsJson = JSON.stringify(Object.assign({}, productIdsTable));
-  dbConnection.query(
-    deleteCartTableContent,
-    (err, result, fields) => {
-      if (!err) {
-        dbConnection.query(
-          createCart,
-          [`[${productIdsTable}]`],
-          (err, result, fields) => {
-            if (!err) {
-              console.log(result);
-              res.json({
-                status: 200,
-                message: `Your cart is saved. Don't forget to save it after every modification!`,
-              });
-            } else {
-              console.log(err);
-              res.json({ status: 500, error: err });
-            }
+  dbConnection.query(deleteCartTableContent, (err, result, fields) => {
+    if (!err) {
+      dbConnection.query(
+        createCart,
+        [`[${productIdsTable}]`],
+        (err, result, fields) => {
+          if (!err) {
+            console.log(result);
+            res.json({
+              status: 200,
+              message: `Your cart is saved. Don't forget to save it after every modification!`,
+            });
+          } else {
+            console.log(err);
+            res.json({ status: 500, error: err });
           }
-        );
-      } else {
-        res.json({ status: 500, error: err });
-      }
+        }
+      );
+    } else {
+      res.json({ status: 500, error: err });
     }
-  );
+  });
+});
+
+router.get("/:id/cart", async (req, res) => {
+  dbConnection.query(getCart, [1], (err, result, fields) => {
+    if (!err) {
+      console.log(result);
+      res.json({
+        status: 200,
+        message: `Your local cart has been updated from database!`,
+        cart:result[0].products
+      });
+    } else {
+      console.log(err);
+      res.json({ status: 500, error: err });
+    }
+  });
 });
 module.exports = router;
