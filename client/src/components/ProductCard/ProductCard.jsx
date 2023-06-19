@@ -24,6 +24,7 @@ function ProductCard(pr) {
   const [isFavorite, setIsFavorite] = useState(false);
   const addToCart = (addedProduct) => {
     !isAdded && dispatch(add(addedProduct));
+
   };
   const favorites = useSelector((state) => state.favorites.favorites);
   const addFavorite = () => {

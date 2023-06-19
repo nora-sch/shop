@@ -136,3 +136,7 @@ shop-react-express/client$ npm install @mui/material @emotion/react @emotion/sty
 shop-react-express/client$ npm install @fontsource/roboto
 
 ```
+# ADD CARTS TABLE
+```
+mysql> create table carts (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, products JSON NULL);
+```
