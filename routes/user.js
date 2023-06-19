@@ -13,6 +13,7 @@ const deleteOne = "DELETE FROM users WHERE id = ?";
 const createCart = "INSERT INTO carts (products) VALUES(?)";
 const updateCart = "UPDATE carts SET products = ?  WHERE id = ?";
 const deleteCart = "DELETE FROM carts WHERE id = ?";
+const deleteCartTableContent = "TRUNCATE carts";
 const getCart = "SELECT * FROM carts WHERE id=?";
 const dateToday = new Date().toISOString().slice(0, 10);
 
@@ -149,53 +150,86 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+// router.post("/:id/cart", async (req, res) => {
+//   const { userCart } = req.body;
+//   const productIdsTable = userCart.map((product) => product.id);
+//   const productIdsJson = JSON.stringify(Object.assign({}, productIdsTable));
+// console.log(productIdsTable);
+//   dbConnection.query(getCart, [1], (err, result, fields) => {
+//     if (!err && result.length === 0) {
+//       dbConnection.query(
+//         createCart,
+//         // `[${productIdsTable}]`,
+//         [`[${productIdsTable}]`],
+//         (err, result, fields) => {
+//           res.json({ status: 200, message: "ok" });
+//           if (!err) {
+//           } else {
+//             res.json({ status: 500, error: err });
+//           }
+//         }
+//       );
+//     } else if (!err && result.length === 1) {
+//       // dbConnection.query(updateCart, [null, 1], (err, result, fields) => {
+//       //   if (!err) {
+//           dbConnection.query(
+//             updateCart,
+//             [`[${productIdsTable}]`, 1],
+//             (err, result, fields) => {
+//               if (!err) {
+//                 console.log(result);
+//                 res.json({
+//                   status: 200,
+//                   message: `Item, ${userCart.title} added to cart!`,
+//                 });
+//               } else {
+//                 console.log(err);
+//                 res.json({ status: 500, error: err });
+//               }
+//             }
+//           );
+//         // } else {
+//         //   console.log(err);
+//         //   res.json({ status: 500, error: err });
+//         // }
+//       // });
+//     } else {
+//       console.log(err);
+//       res.json({ status: 500, error: err });
+//     }
+//   });
+// });
+
 router.post("/:id/cart", async (req, res) => {
-  const { userCart } = req.body;
-  const productIdsTable = userCart.map((product) => product.id);
-  const productIdsJson = JSON.stringify(Object.assign({}, productIdsTable));
-console.log(productIdsTable);
-  dbConnection.query(getCart, [1], (err, result, fields) => {
-    if (!err && result.length === 0) {
-      dbConnection.query(
-        createCart,
-        // `[${productIdsTable}]`,
-        [`[${productIdsTable}]`],
-        (err, result, fields) => {
-          res.json({ status: 200, message: "ok" });
-          if (!err) {
-          } else {
-            res.json({ status: 500, error: err });
-          }
-        }
-      );
-    } else if (!err && result.length === 1) {
-      // dbConnection.query(updateCart, [null, 1], (err, result, fields) => {
-      //   if (!err) {
-          dbConnection.query(
-            updateCart,
-            [`[${productIdsTable}]`, 1],
-            (err, result, fields) => {
-              if (!err) {
-                console.log(result);
-                res.json({
-                  status: 200,
-                  message: `Item, ${userCart.title} added to cart!`,
-                });
-              } else {
-                console.log(err);
-                res.json({ status: 500, error: err });
-              }
+  const { cart } = req.body;
+
+  const productIdsTable = cart.map((product) => product.id);
+  console.log(productIdsTable);
+  // const productIdsJson = JSON.stringify(Object.assign({}, productIdsTable));
+  dbConnection.query(
+    deleteCartTableContent,
+    (err, result, fields) => {
+      if (!err) {
+        dbConnection.query(
+          createCart,
+          [`[${productIdsTable}]`],
+          (err, result, fields) => {
+            if (!err) {
+              console.log(result);
+              res.json({
+                status: 200,
+                message: `Your cart is saved. Don't forget to save it after every modification!`,
+              });
+            } else {
+              console.log(err);
+              res.json({ status: 500, error: err });
             }
-          );
-        // } else {
-        //   console.log(err);
-        //   res.json({ status: 500, error: err });
-        // }
-      // });
-    } else {
-      console.log(err);
-      res.json({ status: 500, error: err });
+          }
+        );
+      } else {
+        res.json({ status: 500, error: err });
+      }
     }
-  });
+  );
 });
 module.exports = router;

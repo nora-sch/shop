@@ -18,7 +18,27 @@ import { deleteOne, deleteAll } from "./ProductCard/cartSlice";
 import { remove } from "../features/signIn/signInSlice";
 
 import SearchBar from "./SearchBar";
-
+import { toast } from "react-toastify";
+const notify = (msg, type) => {
+  switch (type) {
+    case "success":
+      toast.success(msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        theme: "colored",
+        className: "toast-success",
+      });
+      break;
+    case "error":
+      toast.error(msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        theme: "colored",
+        className: "toast-error",
+      });
+      break;
+  }
+};
 function getTotal(cart) {
   let totalCount = 0;
   cart.forEach((item) => {
@@ -26,6 +46,30 @@ function getTotal(cart) {
   });
   return totalCount;
 }
+const postCart = async (cart) => {
+  const sendItem = await fetch("/api/users/:id/cart", {
+    method: "POST",
+    body: JSON.stringify({
+      cart,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      // "token":
+    },
+  });
+  if (sendItem.status === 200) {
+    const body = await sendItem.json();
+    if (body.status === 200) {
+      notify(body.message, "success");
+    } else if (body.status === 400) {
+      notify(body.message, "error");
+    } else {
+      notify(body.error, "error");
+    }
+  } else {
+    notify(`Server error ${sendItem.status}`, "error");
+  }
+};
 
 function NavigationBar(args) {
   //   const user = useSelector((state) => state.login.value);
@@ -37,6 +81,7 @@ function NavigationBar(args) {
   const [isOpenCart, setIsOpenCart] = useState(false);
   let [total, setTotal] = useState(getTotal(cart));
   // console.log(prod);
+
   const openCart = () => {
     if (cart.length > 0) {
       setIsOpenCart(!isOpenCart);
@@ -45,6 +90,9 @@ function NavigationBar(args) {
   const logOut = () => {
     navigate("/");
     dispatch(remove());
+  };
+  const saveCartToDB = (cart) => {
+    postCart(cart);
   };
   useEffect(() => {
     const newTotalCount = getTotal(cart);
@@ -57,9 +105,7 @@ function NavigationBar(args) {
   return (
     <div>
       <Navbar expand={"xl"}>
-        <NavbarBrand style={{ color: "#713f4b" }}>
-          Shop
-        </NavbarBrand>
+        <NavbarBrand style={{ color: "#713f4b" }}>Shop</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
@@ -182,6 +228,19 @@ function NavigationBar(args) {
             }}
           >
             Delete All
+          </Button>
+          <Button
+            onClick={() => {
+              saveCartToDB(cart);
+            }}
+            style={{
+              backgroundColor: "#dba39a",
+              color: "#713f4b",
+              border: "none",
+              fontWeight: "bold",
+            }}
+          >
+            Save cart
           </Button>
         </div>
       )}

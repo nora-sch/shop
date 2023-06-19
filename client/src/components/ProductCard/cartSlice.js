@@ -56,17 +56,17 @@ export const cartSlice = createSlice({
     add: (state, action) => {
       state.cart = [...state.cart, action.payload];
       localStorage.setItem("cart", JSON.stringify(state.cart));
-      postCart(state);
+      // postCart(state);
     },
     deleteOne: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
       localStorage.setItem("cart", JSON.stringify(state.cart));
-      postCart(state);
+      // postCart(state);
     },
     deleteAll: (state) => {
       state.cart = [];
       localStorage.setItem("cart", JSON.stringify(state.cart));
-      postCart(state);
+      // postCart(state);
     },
   },
 });
