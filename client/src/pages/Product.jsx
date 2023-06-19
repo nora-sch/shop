@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaCartPlus } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "../components/ProductCard/cartSlice";
 import { RiHeart3Line, RiHeart3Fill } from "react-icons/ri";
@@ -49,7 +49,7 @@ const updateFavorites = async (favoriteProduct, action) => {
   if (sendFavorite.status === 200) {
     const body = await sendFavorite.json();
     if (body.status === 200) {
-      notify(`${body.favorite.title} ${action} favorites`, "success");
+      // notify(`${body.favorite.title} ${action} favorites`, "success");
     } else {
       notify(body.error, "error");
     }
@@ -73,7 +73,7 @@ function Product() {
 
   const addFavorite = () => {
     if (!isFavorite) {
-      console.log(product)
+      console.log(product);
       setIsFavorite(true);
       updateFavorites(product, "added to");
     } else {
@@ -89,11 +89,11 @@ function Product() {
     };
     getProduct();
   }, []);
+
   useEffect(() => {
     const isFavoriteProduct = async (id) => {
       const userFavorites = await fetch("/api/users/:id/favorites");
       const userFavoritesFetched = await userFavorites.json();
-
       if (
         userFavoritesFetched.favorites.length > 0 &&
         userFavoritesFetched.favorites.includes(product.id)
@@ -103,131 +103,142 @@ function Product() {
     };
     isFavoriteProduct(id);
   }, [product]);
-  console.log(product);
   return (
     // product.length > 0 && (
-    <Card
-      style={{
-        width: "18rem",
-        padding: "10px",
-        border: "none",
-        margin: "5px",
-      }}
-    >
-      <ImgWrapper>
-        <img
-          style={{
-            height: "auto",
-
-            width: "100%",
-            maxHeight: "100%",
-          }}
-          alt={product.title}
-          src={product.image}
-        />
-        {isFavorite ? (
-          <RiHeart3Fill
-            onClick={() => {
-              addFavorite();
-            }}
-            style={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              fontSize: "30px",
-              color: "#dba39a",
-            }}
-          />
-        ) : (
-          <RiHeart3Line
-            onClick={() => {
-              addFavorite();
-            }}
-            style={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              fontSize: "30px",
-              color: "lightgrey",
-            }}
-          />
-        )}
-      </ImgWrapper>
-
-      <CardBody
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ width: "20%", textAlign: "right", margin: "30px" }}>
+        <Link to={"/"}>BACK</Link>
+      </div>
+      <Card
         style={{
+          width: "60%",
+          padding: "20px 10px 20px 20px",
+          border: "none",
+          margin: "10px auto",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+          flexDirection: "row",
         }}
       >
-        <div>
-          <CardHeader>
-            <CardTitle tag="h6" style={{ width: "90%" }}>
-              {product.title}
-            </CardTitle>
-            {/* <Rating>{product.length>0?product.rating.rate:''}</Rating> */}
-          </CardHeader>
-          <CardSubtitle
-            className="mb-2 text-muted"
+        <ImgWrapper style={{ width: "100%", height:"100%" }}>
+          <img
             style={{
-              fontSize: "12px",
+              height: "auto",
               width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
+              maxHeight: "100%",
             }}
-          >
-            {/* <span>rating </span> */}
-            {/* <Rating>{product.rating.rate}</Rating> */}
-            <div>{product.description}</div>
-            <div>{product.category}</div>
-          </CardSubtitle>
-        </div>
-        {user && (
-          <CardBottom>
-            {/* <Price>{product.price.toFixed(2)} €</Price> */}
+            alt={product.title}
+            src={product.image}
+          />
+        </ImgWrapper>
 
-            {isAdded ? (
-              <Button
-                //   onClick={() => {
-                //     addToCart(product);
-                //   }}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "30%",
-                  height: "40px",
-                  border: "none",
-                }}
-              >
-                <FaCartPlus style={{ fontSize: "22px" }} />
-              </Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  addToCart(product);
-                }}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "30%",
-                  height: "40px",
-                  border: "none",
-                  backgroundColor: "#DBA39A",
-                  color: "white",
-                }}
-              >
-                <FaCartPlus style={{ fontSize: "22px" }} />
-              </Button>
-            )}
-          </CardBottom>
-        )}
-      </CardBody>
-    </Card>
+        <CardBody
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            marginLeft: "10px",
+          }}
+        >
+          <div>
+            <CardHeader>
+              <CardTitle tag="h5" style={{ width: "90%" }}>
+                {product.title}
+                {isFavorite ? (
+                  <RiHeart3Fill
+                    onClick={() => {
+                      addFavorite();
+                    }}
+                    style={{
+                      // position: "absolute",
+                      // top: "5px",
+                      // right: "5px",
+                      fontSize: "30px",
+                      color: "#dba39a",
+                      marginLeft: "10px",
+                    }}
+                  />
+                ) : (
+                  <RiHeart3Line
+                    onClick={() => {
+                      addFavorite();
+                    }}
+                    style={{
+                      // position: "absolute",
+                      // top: "5px",
+                      // right: "5px",
+                      fontSize: "30px",
+                      color: "lightgrey",
+                      marginLeft: "10px",
+                    }}
+                  />
+                )}
+              </CardTitle>
+              {/* <Rating>{product.length>0?product.rating.rate:''}</Rating> */}
+            </CardHeader>
+            <CardSubtitle
+              className="mb-2 text-muted"
+              style={{
+                fontSize: "16px",
+                width: "100%",
+                // display: "flex",
+                // flexDirection: "column",
+                // justifyContent: "flex-end",
+                // alignItems: "center",
+              }}
+            >
+              {/* <span>rating </span> */}
+              {/* <Rating>{product.rating.rate}</Rating> */}
+              <div>{product.description}</div>
+              <div style={{ color: "#dba39a", marginTop: "10px" }}>
+                {product.category}
+              </div>
+            </CardSubtitle>
+          </div>
+          {user && (
+            <CardBottom style={{ display: "flex", justifyContent: "flex-end" }}>
+              {/* <Price>{product.price.toFixed(2)} €</Price> */}
+
+              {isAdded ? (
+                <Button
+                  //   onClick={() => {
+                  //     addToCart(product);
+                  //   }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "70px",
+                    height: "40px",
+                    border: "none",
+                  }}
+                >
+                  <FaCartPlus style={{ fontSize: "22px" }} />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    addToCart(product);
+                  }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "70px",
+                    height: "40px",
+                    border: "none",
+                    backgroundColor: "#DBA39A",
+                    color: "white",
+                  }}
+                >
+                  <FaCartPlus style={{ fontSize: "22px" }} />
+                </Button>
+              )}
+            </CardBottom>
+          )}
+        </CardBody>
+      </Card>
+      <div style={{ width: "20%" }}></div>
+    </div>
   );
   //   );
 }

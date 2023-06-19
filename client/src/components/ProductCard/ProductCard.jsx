@@ -50,7 +50,7 @@ const updateFavorites = async (favoriteProduct, action) => {
   if (sendFavorite.status === 200) {
     const body = await sendFavorite.json();
     if (body.status === 200) {
-      notify(`${body.favorite.title} ${action} favorites`, "success");
+      // notify(`${body.favorite.title} ${action} favorites`, "success");
     } else {
       notify(body.error, "error");
     }

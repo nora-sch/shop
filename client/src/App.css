@@ -18,6 +18,7 @@
   background-color: #f5ebe0;
   color: #713f4b;
   font-family: "Quicksand", sans-serif;
+  min-height: 100vh;
 }
 body {
   margin: 0;
