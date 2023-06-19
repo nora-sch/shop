@@ -136,7 +136,9 @@ shop-react-express/client$ npm install @mui/material @emotion/react @emotion/sty
 shop-react-express/client$ npm install @fontsource/roboto
 
 ```
-# ADD CARTS TABLE
+# ADD CARTS and FAVORITES TABLE
 ```
 mysql> create table carts (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, products JSON NULL);
+mysql> create table favorites (id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, favorites JSON NULL);
+mysql> insert into favorites (favorites) VALUES (null); // for one favorites set while we have no user attached
 ```

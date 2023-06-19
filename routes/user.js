@@ -15,6 +15,8 @@ const updateCart = "UPDATE carts SET products = ?  WHERE id = ?";
 const deleteCart = "DELETE FROM carts WHERE id = ?";
 const deleteCartTableContent = "TRUNCATE carts";
 const getCart = "SELECT * FROM carts WHERE id=?";
+const getFavorites = "SELECT favorites FROM favorites WHERE id=?";
+const updateFavorites = "UPDATE favorites SET favorites = ?  WHERE id = ?";
 const dateToday = new Date().toISOString().slice(0, 10);
 
 // ROUTE "/"
@@ -234,11 +236,67 @@ router.get("/:id/cart", async (req, res) => {
   dbConnection.query(getCart, [1], (err, result, fields) => {
     if (!err) {
       console.log(result);
-      res.json({
+      res.status(200).json({
         status: 200,
         message: `Your local cart has been updated from database!`,
-        cart:result[0].products
+        cart: result[0].products,
       });
+    } else {
+      console.log(err);
+      res.json({ status: 500, error: err });
+    }
+  });
+});
+
+router.put("/:id/favorites", async (req, res) => {
+  //   {
+  //     "favorite": {
+  //         "id": 7,
+  //         "title": "White Gold Plated Princess",
+  //         "price": 9.99,
+  //         "description": "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
+  //         "category": "jewelery",
+  //         "image": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
+  //         "rating": {
+  //             "rate": 3,
+  //             "count": 400
+  //         }
+  //     }
+  // }
+
+  const { favorite } = req.body;
+  const favoriteProductId = favorite.id;
+
+  dbConnection.query(getFavorites, [1], (err, result, fields) => {
+    if (!err) {
+      let newFavoritesArray;
+      const currentFavorites = result[0].favorites;
+      if (!currentFavorites || !currentFavorites.includes(favoriteProductId)) {
+        !currentFavorites
+          ? (newFavoritesArray = [])
+          : (newFavoritesArray = currentFavorites);
+        newFavoritesArray.push(favoriteProductId);
+      } else {
+        newFavoritesArray = currentFavorites.filter(
+          (fav) => fav !== favoriteProductId
+        );
+      }
+      dbConnection.query(
+        updateFavorites,
+        [`[${newFavoritesArray}]`, 1],
+        (err, result, fields) => {
+          if (!err) {
+            // console.log(result);
+            res.json({
+              status: 200,
+              favorite: favorite,
+            });
+          } else {
+            console.log(err);
+            res.json({ status: 500, error: err });
+          }
+        }
+      );
     } else {
       console.log(err);
       res.json({ status: 500, error: err });

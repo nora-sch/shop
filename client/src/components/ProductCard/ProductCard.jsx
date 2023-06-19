@@ -15,7 +15,49 @@ import {
 } from "reactstrap";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
+import { toast } from "react-toastify";
+const notify = (msg, type) => {
+  switch (type) {
+    case "success":
+      toast.success(msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        theme: "colored",
+        className: "toast-success",
+      });
+      break;
+    case "error":
+      toast.error(msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        theme: "colored",
+        className: "toast-error",
+      });
+      break;
+  }
+};
+const updateFavorites = async (favorite, action) => {
+  const sendFavorite = await fetch("/api/users/:id/favorites", {
+    method: "PUT",
+    body: JSON.stringify({
+      favorite,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      // "token":
+    },
+  });
+  if (sendFavorite.status === 200) {
+    const body = await sendFavorite.json();
+    if (body.status === 200) {
+      notify(`${body.favorite.title} ${action} favorites`, "success");
+    } else {
+      notify(body.error, "error");
+    }
+  } else {
+    notify(`Server error ${sendFavorite.status}`, "error");
+  }
+};
 function ProductCard(pr) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
@@ -24,16 +66,18 @@ function ProductCard(pr) {
   const [isFavorite, setIsFavorite] = useState(false);
   const addToCart = (addedProduct) => {
     !isAdded && dispatch(add(addedProduct));
-
   };
   const favorites = useSelector((state) => state.favorites.favorites);
+
   const addFavorite = () => {
     if (!isFavorite) {
       setIsFavorite(true);
       dispatch(addFav(pr.pr));
+      updateFavorites(pr.pr, 'added to');
     } else {
       setIsFavorite(false);
       dispatch(remove(pr.pr));
+      updateFavorites(pr.pr, 'removed from');
     }
   };
   return (
