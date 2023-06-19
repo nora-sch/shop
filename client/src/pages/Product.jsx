@@ -3,7 +3,7 @@ import { FaCartPlus } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "../components/ProductCard/cartSlice";
-
+import { RiHeart3Line, RiHeart3Fill } from "react-icons/ri";
 import {
   Button,
   Card,
@@ -13,17 +13,73 @@ import {
   CardTitle,
 } from "reactstrap";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+
+const notify = (msg, type) => {
+  switch (type) {
+    case "success":
+      toast.success(msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        theme: "colored",
+        className: "toast-success",
+      });
+      break;
+    case "error":
+      toast.error(msg, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        theme: "colored",
+        className: "toast-error",
+      });
+      break;
+  }
+};
+const updateFavorites = async (favoriteProduct, action) => {
+  const sendFavorite = await fetch("/api/users/:id/favorites", {
+    method: "PUT",
+    body: JSON.stringify({
+      favoriteProduct,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      // "token":
+    },
+  });
+  if (sendFavorite.status === 200) {
+    const body = await sendFavorite.json();
+    if (body.status === 200) {
+      notify(`${body.favorite.title} ${action} favorites`, "success");
+    } else {
+      notify(body.error, "error");
+    }
+  } else {
+    notify(`Server error ${sendFavorite.status}`, "error");
+  }
+};
 
 function Product() {
   const url = "https://fakestoreapi.com/products/";
   const { id } = useParams();
   const [product, setProduct] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const cart = useSelector((state) => state.cart.cart);
   const user = useSelector((state) => state.user.user);
   const isAdded = cart.find((item) => item.id === product.id);
   const dispatch = useDispatch();
   const addToCart = (addedProduct) => {
     !isAdded && dispatch(add(addedProduct));
+  };
+
+  const addFavorite = () => {
+    if (!isFavorite) {
+      console.log(product)
+      setIsFavorite(true);
+      updateFavorites(product, "added to");
+    } else {
+      setIsFavorite(false);
+      updateFavorites(product, "removed from");
+    }
   };
   useEffect(() => {
     const getProduct = async () => {
@@ -33,6 +89,20 @@ function Product() {
     };
     getProduct();
   }, []);
+  useEffect(() => {
+    const isFavoriteProduct = async (id) => {
+      const userFavorites = await fetch("/api/users/:id/favorites");
+      const userFavoritesFetched = await userFavorites.json();
+
+      if (
+        userFavoritesFetched.favorites.length > 0 &&
+        userFavoritesFetched.favorites.includes(product.id)
+      ) {
+        setIsFavorite(true);
+      }
+    };
+    isFavoriteProduct(id);
+  }, [product]);
   console.log(product);
   return (
     // product.length > 0 && (
@@ -55,6 +125,33 @@ function Product() {
           alt={product.title}
           src={product.image}
         />
+        {isFavorite ? (
+          <RiHeart3Fill
+            onClick={() => {
+              addFavorite();
+            }}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              fontSize: "30px",
+              color: "#dba39a",
+            }}
+          />
+        ) : (
+          <RiHeart3Line
+            onClick={() => {
+              addFavorite();
+            }}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              fontSize: "30px",
+              color: "lightgrey",
+            }}
+          />
+        )}
       </ImgWrapper>
 
       <CardBody

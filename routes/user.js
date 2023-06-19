@@ -274,8 +274,9 @@ router.put("/:id/favorites", async (req, res) => {
   //     }
   // }
 
-  const { favorite } = req.body;
-  const favoriteProductId = favorite.id;
+  const { favoriteProduct } = req.body;
+  console.log(req.body)
+  const favoriteProductId = favoriteProduct.id;
 
   dbConnection.query(getFavorites, [1], (err, result, fields) => {
     if (!err) {
@@ -296,10 +297,9 @@ router.put("/:id/favorites", async (req, res) => {
         [`[${newFavoritesArray}]`, 1],
         (err, result, fields) => {
           if (!err) {
-            // console.log(result);
             res.json({
               status: 200,
-              favorite: favorite,
+              favorite: favoriteProduct,
             });
           } else {
             console.log(err);

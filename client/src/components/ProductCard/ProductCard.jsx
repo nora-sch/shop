@@ -36,11 +36,11 @@ const notify = (msg, type) => {
       break;
   }
 };
-const updateFavorites = async (favorite, action) => {
+const updateFavorites = async (favoriteProduct, action) => {
   const sendFavorite = await fetch("/api/users/:id/favorites", {
     method: "PUT",
     body: JSON.stringify({
-      favorite,
+      favoriteProduct,
     }),
     headers: {
       "Content-Type": "application/json",
@@ -71,6 +71,7 @@ function ProductCard(props) {
 
   const addFavorite = () => {
     if (!isFavorite) {
+      console.log(props.pr)
       setIsFavorite(true);
       // dispatch(addFav(props.pr));
       updateFavorites(props.pr, "added to");

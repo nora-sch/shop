@@ -22,7 +22,7 @@ function Home() {
     };
 
     const getUserFavorites = async () => {
-      const fetchFavorites = await fetch("api/users/:id/favorites");
+      const fetchFavorites = await fetch("/api/users/1/favorites");
       const favoritesFetched = await fetchFavorites.json();
       setFavorites(favoritesFetched.favorites);
     };

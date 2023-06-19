@@ -208,14 +208,13 @@ function NavigationBar(args) {
         <div
           className="side-bar"
           style={{
-            height: "100vh",
+            minHeight: "100vh",
             width: "30%",
             zIndex: "1000",
             backgroundColor: "#F5EBE0",
             position: "absolute",
             right: "0",
-            padding: "15px",
-            marginTop: "5px",
+            padding: "5px 15px 15px 15px",
           }}
         >
           <Table hover style={{ fontSize: "15px", backgroundColor: "#F5EBE0" }}>
