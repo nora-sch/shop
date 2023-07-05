@@ -10,6 +10,10 @@ import {
   NavLink,
   Table,
   Button,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 import { FaUserCircle, FaShoppingCart, FaCartPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +23,7 @@ import { remove } from "../features/signIn/signInSlice";
 
 import SearchBar from "./SearchBar";
 import { toast } from "react-toastify";
+import styled from "styled-components";
 const notify = (msg, type) => {
   switch (type) {
     case "success":
@@ -131,7 +136,7 @@ function NavigationBar(args) {
     const newTotalCount = getTotal(cart);
     setTotal(newTotalCount);
   }, [cart]);
-
+  console.log(user);
   // navbar
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
@@ -147,7 +152,7 @@ function NavigationBar(args) {
                 Home
               </NavLink>
             </NavItem>
-            {user && (
+            {/* {user && (
               <NavItem>
                 <NavLink
                   tag={RRNavLink}
@@ -157,28 +162,14 @@ function NavigationBar(args) {
                   Profile
                 </NavLink>
               </NavItem>
-            )}
+            )} */}
           </Nav>
           <SearchBar />
-          {/* {user ? (
-            <FaUserCircle style={{ marginRight: "10px", color: "green" }} />
-          ) : (
-            <FaUserCircle style={{ marginRight: "10px" }} />
-          )}
-          {user ? (
-            <div>
-            {user.firstname}
-            <button onClick={() => dispatch(logout())} style={{marginLeft:'10px'}}>Sign Out</button>
-            </div>
-          ) : (
-            <NavLink tag={RRNavLink} to="/login">
-              Sign In
-            </NavLink>
-          )} */}
           <FaShoppingCart
             onClick={() => {
               openCart();
             }}
+            style={{ cursor: "pointer" }}
           />
           <span
             style={{
@@ -196,10 +187,27 @@ function NavigationBar(args) {
             {cart.length}
           </span>
           {user ? (
-            <div onClick={() => logOut()}>Logout</div>
+            <UserInfo>
+              <UncontrolledDropdown nav inNavbar style={{ listStyle: "none" }}>
+                <DropdownToggle nav>
+                  <Avatar src={user.avatar} alt={`${user.firstName} avatar`} />
+                </DropdownToggle>
+                <DropdownMenu style={{ position: "fixed", right: "10px", margin: "10px" }}>
+                  <DropdownItem>
+                    <NavLink tag={RRNavLink} to="/profile">
+                      <NavButton>Profile</NavButton>
+                    </NavLink>
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>
+                    <NavButton onClick={() => logOut()}>Logout</NavButton>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </UserInfo>
           ) : (
             <NavLink tag={RRNavLink} to="/sign-in">
-              Sign In
+              <NavButton>Sign In</NavButton>
             </NavLink>
           )}
         </Collapse>
@@ -231,7 +239,12 @@ function NavigationBar(args) {
               {cart.map((item, i) => (
                 <tr key={item.id}>
                   <th scope="row">{i + 1}</th>
-                  <td><img style={{objectFit:'cover', width:'30px'}} src={item.image}/></td>
+                  <td>
+                    <img
+                      style={{ objectFit: "cover", width: "30px" }}
+                      src={item.image}
+                    />
+                  </td>
                   <td>{item.title}</td>
                   <td style={{ width: "18%" }}>{item.price.toFixed(2)} €</td>
                   <td>
@@ -259,6 +272,8 @@ function NavigationBar(args) {
               color: "#713f4b",
               border: "none",
               fontWeight: "bold",
+              marginRight:"10px",
+              marginTop:"10px",
             }}
           >
             Delete All
@@ -272,6 +287,8 @@ function NavigationBar(args) {
               color: "#713f4b",
               border: "none",
               fontWeight: "bold",
+              marginRight:"10px",
+              marginTop:"10px",
             }}
           >
             Save cart
@@ -285,6 +302,8 @@ function NavigationBar(args) {
               color: "#713f4b",
               border: "none",
               fontWeight: "bold",
+              marginRight:"10px",
+              marginTop:"10px",
             }}
           >
             Get cart
@@ -296,3 +315,20 @@ function NavigationBar(args) {
 }
 
 export default NavigationBar;
+const Avatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  margin-left: 20px;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+const NavButton = styled.div`
+  margin-left: 20px;
+  cursor: pointer;
+  color: #713f4b;
+`;

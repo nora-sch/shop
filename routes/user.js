@@ -6,7 +6,7 @@ const getAll = "SELECT * FROM users";
 const getOne = "SELECT * FROM users WHERE id=?";
 const getOneByEmail = "SELECT * FROM users WHERE email=?";
 const createOne =
-  "INSERT INTO users (first_name, last_name, email, created_at, updated_at, is_admin) VALUES(?, ?, ?, ?, ?, ?)";
+  "INSERT INTO users (first_name, last_name, email, created_at, updated_at, is_admin, avatar) VALUES(?, ?, ?, ?, ?, ?, ?)";
 const updateFirstnameOne =
   "UPDATE users SET first_name = ?, updated_at = ? WHERE id = ?";
 const deleteOne = "DELETE FROM users WHERE id = ?";
@@ -31,18 +31,19 @@ router.get("/", (req, res) => {
 });
 router.post("/signup", async (req, res) => {
   console.log(req.body);
-  const { firstName, lastName, email } = req.body;
+  const { firstName, lastName, email, avatar } = req.body;
   // {
   //     "firstName":"Nora",
   //     "lastName":"Sumane",
-  //     "email":"norah@inbox.lv"
+  //     "email":"norah@inbox.lv",
+  //     "avatar":"http://res.cloudinary.com/cloudinarynora/image/upload/v1688478682/Capture_d_%C3%A9cran_du_2023-07-02_22-01-56_p3unio.png"
   // }
   dbConnection.query(getOneByEmail, [email], (err, result, fields) => {
     if (!err) {
       if (result.length === 0) {
         dbConnection.query(
           createOne,
-          [firstName, lastName, email, dateToday, dateToday, false],
+          [firstName, lastName, email, dateToday, dateToday, false, avatar],
           (err, result, fields) => {
             if (!err) {
               res.json({
@@ -83,6 +84,7 @@ router.post("/signin", (req, res) => {
         email: result[0].email,
         createdAt: result[0].created_at,
         updatedAt: result[0].updated_at,
+        avatar: result[0].avatar,
       };
       // const jsonResponse =  formattedUser.json()
       res.json({

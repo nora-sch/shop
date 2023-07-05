@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 function SignUp() {
   //   const MAX_LENGTH = 255;
@@ -13,13 +14,15 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [isSignedUp, setIsSignedUp] = useState(false);
+  const [avatar, setAvatar] = useState("");
+  const [avatarLink, setAvatarLink] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     if (isSignedUp) {
       navigate("/sign-in");
     }
   }, [isSignedUp]);
-
+  const cld = new Cloudinary({ cloud: { cloudName: "cloudinarynora" } });
   const notify = (msg, type) => {
     switch (type) {
       case "success":
@@ -42,6 +45,56 @@ function SignUp() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", avatar);
+    formData.append("upload_preset", "upload_token"); // name of upload token fromp cloudinary (settings --> upload)
+    // console.log(formData);
+    // https://api.cloudinary.com/v1_1/:cloud_name/:action
+    const cloudImage = () => {
+      fetch("https://api.cloudinary.com/v1_1/cloudinarynora/image/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+        })
+        .then((data) => {
+          fetch("/api/users/signup", {
+            method: "POST",
+            body: JSON.stringify({
+              firstName: firstName,
+              lastName: lastName,
+              email: email,
+              avatar: data.url,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              // "token":
+            },
+          })
+            .then((response) => {
+              console.log(response);
+              if (response.ok) {
+                return response.json();
+              } else {
+                notify(`Server error ${response.status}`, "error");
+              }
+            })
+            .then((data) => {
+              if (data.status === 201) {
+                setIsSignedUp(true);
+                notify(data.message, "success");
+              } else if (data.status === 400) {
+                notify(data.message, "error");
+              } else {
+                notify(data.error, "error");
+              }
+            });
+        });
+    };
+
     const postUser = async () => {
       const sendUser = await fetch("/api/users/signup", {
         method: "POST",
@@ -49,6 +102,7 @@ function SignUp() {
           firstName: firstName,
           lastName: lastName,
           email: email,
+          avatar: avatarLink,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +123,9 @@ function SignUp() {
         notify(`Server error ${sendUser.status}`, "error");
       }
     };
-    postUser();
+
+    cloudImage();
+    // postUser();
   };
 
   return (
@@ -81,6 +137,7 @@ function SignUp() {
         height: "100vh",
       }}
     >
+      {avatarLink}
       <Form
         style={{
           width: "25%",
@@ -186,6 +243,22 @@ function SignUp() {
             placeholder="Repeat your password"
             onChange={(e) => setPassword2(e.target.value)}
             required
+          />
+        </FormGroup>
+        <FormGroup
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Label style={{ margin: "0px" }} for="avatar"></Label>
+          <Input
+            className="text-input"
+            name="avatar"
+            type="file"
+            placeholder="Choose your avatar"
+            onChange={(e) => setAvatar(e.target.files[0])}
           />
         </FormGroup>
         <Button

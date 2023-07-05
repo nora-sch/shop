@@ -10,13 +10,14 @@
   --light-color: #f5ebe0;
   --neutral-color: #f0dbdb;
   --accent-color: #dba39a;
+  --text-color: #713f4b;
 }
 #root {
   /* max-width: 1280px; */
   margin: 0, auto;
   padding: 0 3rem;
   background-color: #f5ebe0;
-  color: #713f4b;
+  color: var(--text-color);
   font-family: "Quicksand", sans-serif;
   min-height: 100vh;
 }

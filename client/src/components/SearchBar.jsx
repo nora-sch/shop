@@ -36,5 +36,5 @@ function SearchBar() {
 
 export default SearchBar;
 const SearchBarWrapper = styled.div`
-  margin-right: 10px;
+  margin: 0px 20px;
 `;

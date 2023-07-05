@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { addAll } from "./productSlice";
 
-const LIMIT = 20;
+const LIMIT = 19;
 function Home() {
   const user = useSelector((state) => state.user.user);
   const url = "https://fakestoreapi.com/products?limit=" + LIMIT;
@@ -22,7 +22,7 @@ function Home() {
     };
 
     const getUserFavorites = async () => {
-      const fetchFavorites = await fetch("/api/users/1/favorites");
+      const fetchFavorites = await fetch("/api/users/:id/favorites");
       const favoritesFetched = await fetchFavorites.json();
       setFavorites(favoritesFetched.favorites);
     };
